@@ -27,7 +27,7 @@ app.post('/summarise', async (req, res) => {
 
   try {
     // Call Azure OpenAI API using fetch
-    const response = await fetch(`${process.env.AZURE_OPENAI_ENDPOINT}/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview`, {
+    const response = await fetch('https://yak-dev-aai-app-1.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2024-08-01-preview', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -35,11 +35,11 @@ app.post('/summarise', async (req, res) => {
       },
       body: JSON.stringify({
         messages: [
-          { role: 'system', content: 'You are an assistant that summarizes text to fit a character limit. If the text contains emoji or other Unicode characters, the limit is 70 characters. Otherwise, it is 160 characters.' },
-          { role: 'user', content: `Summarise the following text: ${text}` }
+          { role: 'system', content: 'You are an assistant that summarises text. If the text contains emoji or Unicode characters, summarise it to fit 70 characters. Otherwise, summarise it to fit 160 characters. Only provide a single summary, and do not explain or list the number of characters.' },
+          { role: 'user', content: `Summarise the following text in 160 characters or less: ${text}` }
         ],
-        max_tokens: 100,
-        temperature: 0.7
+        max_tokens: 150,
+        temperature: 0.3
       })
     });
 
