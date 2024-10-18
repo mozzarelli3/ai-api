@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "start": "node api/server.js"
   },
   "type": "module",
@@ -17,5 +17,9 @@
     "express": "^4.21.0",
     "fetch": "^1.1.0",
     "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "supertest": "^7.0.0",
+    "vitest": "^2.1.3"
   }
 }

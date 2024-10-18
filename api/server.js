@@ -19,19 +19,19 @@ app.get('/', (req, res) => {
 
 // Route to handle text summarization
 app.post('/summarise', async (req, res) => {
-  const { text } = req.body;  // Get text from request body
+  const { text, charLimit } = req.body;  // Get text from request body
 
   if (!text) {
     return res.status(400).json({ error: 'Text is required for summarisation.' });
   }
 
-  // Set default charLimit to 160 if not provided or invalid
+  // Set default charLimit to 160 if not provided
   const limit = (charLimit === 320) ? 320 : 160;
 
-
   try {
+
     // Call Azure OpenAI API using fetch
-    const response = await fetch('https://yak-dev-aai-app-1.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2024-08-01-preview', {
+    const response = await fetch(process.env.AZURE_OPENAI_ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ app.post('/summarise', async (req, res) => {
           { role: 'system', content: 'You are an assistant that summarises text. If the text contains emoji or Unicode characters, summarise it to fit 70 characters. Otherwise, summarise it to fit 160 characters. Only provide a single summary, and do not explain or list the number of characters.' },
           { role: 'user', content: `Summarise the following text in ${limit} characters or less: ${text}` }
         ],
-        max_tokens: 150,
+        max_tokens: 300,
         temperature: 0.3
       })
     });
@@ -69,3 +69,5 @@ app.post('/summarise', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+export default app;
